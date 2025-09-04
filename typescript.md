@@ -403,7 +403,7 @@ const add: MathOperations = (a, b) => a + b;
 console.log(add(2, 3));
 ```
 
-## Generics \*\*
+## Generics 
 
 in typescript ,generics allow you to create reusable components that can work with a variety of types.they make it possible for you to define function,classes and interfaces with different data types without having to duplicate them
 
