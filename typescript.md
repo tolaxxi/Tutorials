@@ -16,6 +16,15 @@ npm i typescript -D
 npx tsc --init
 ```
 
+P.s you can use vite
+
+## Recommendation
+
+If you’re starting fresh → use Vite’s TypeScript template.
+It’s cleaner, no extra setup, and avoids mistakes in tsconfig.json.
+
+If you’re migrating an existing JS app → install TypeScript manually.
+
 ## Annotations
 
 used to specify the data type of a variable ,parameter, function return value and other type of values . it helps developer catch errors in early stage of development by allowing them to specify what types of values can be assigned to a given variable
@@ -403,7 +412,7 @@ const add: MathOperations = (a, b) => a + b;
 console.log(add(2, 3));
 ```
 
-## Generics 
+## Generics
 
 in typescript ,generics allow you to create reusable components that can work with a variety of types.they make it possible for you to define function,classes and interfaces with different data types without having to duplicate them
 
