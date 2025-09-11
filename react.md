@@ -285,14 +285,7 @@ const Cart = () => {
   const items = [
     'Bag',
     'Laptop',
-    'Boxed tees',
-    'Baggy Trousers',
     'Skin Care',
-    'Iphone',
-    'Dog',
-    'Dog Cage',
-    'Cat',
-    'Cat supplies',
   ];
   return (
     <>
@@ -484,8 +477,341 @@ export default App;
 
 ```
 
----
+### Passing state and event handlers as props
 
-- start time : 7:09pm (1:49:03)
-- stop time : 2:49:03
-- goal : 3:58:08
+```jsx
+// passing them
+import { useState } from 'react';
+import ComponentOne from './components/ComponentOne.jsx';
+import ComponentTwo from './components/ComponentTwo.jsx';
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <ComponentOne count={count} onclickHandler={/*f
+        event handler goes here */ }/>
+      <ComponentTwo />
+    </div>
+  );
+};
+export default App;
+// consuming Them
+
+const ComponentOne = ({ onclickHandler, count }) => {
+  return (
+    <div>
+      <h1 onCLick={onclickHandler}>{count}</h1>
+    </div>
+  );
+};
+export default ComponentOne;
+
+```
+
+### lazy initializer (Passing Function as initial value To useState)
+
+Normally, `useState(initialValue) `evaluates initialValue immediately on every render. But if you pass a function instead—like `useState(() => someExpensiveComputation())`
+
+React only calls that function once, during the initial render, to set up the state.
+
+- It’s useful when the initial value needs a heavy computation, or when you want to initialize from localStorage/sessionStorage without recalculating on every render.
+
+```jsx
+// example 1
+
+import { useState } from 'react';
+
+const App = () => {
+  const [count, setCount] = useState(() => {
+    const initialCount = 0;
+    return initialCount;
+  });
+  return (
+    <div>
+      <h1>count :{count}</h1>
+      <button
+        onClick={() => {
+          setCount((c) => {
+            return c + 1;
+          });
+        }}
+      >
+        increment
+      </button>
+    </div>
+  );
+};
+export default App;
+// example 3 :using local storage
+
+import { useEffect, useState } from 'react';
+
+const ExampleThree = () => {
+  const [name, setName] = useState(() => {
+    const savedName = localStorage.getItem('name');
+    return savedName ? JSON.parse(savedName) : '';
+  });
+
+  function handleChange(e) {
+    setName(e.target.value);
+  }
+
+  useEffect(() => {
+    localStorage.setItem('name', JSON.stringify(name));
+  }, [name]);
+
+  function clear() {
+    setName('');
+  }
+  return (
+    <div>
+      <h1>name {name}</h1>
+      <input type="text" value={name} onChange={handleChange} placeholder="enter your name" />
+
+      <button onClick={clear}>Clear</button>
+    </div>
+  );
+};
+export default ExampleThree;
+
+
+```
+
+## React Portal
+
+is a feature that allows you to render a child component into a Dom node that exists outside the hierarchy of the parent component. this can be useful in scenarios like modals,tooltips of dropdowns
+
+### React Portal In Action
+
+1. create the element you want to render your child into
+
+```html
+<body>
+  <div id="root"></div>
+  <div id="popupContent"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+```
+
+2. import and use it like this in the child component
+
+```jsx
+import { createPortal } from 'react-dom';
+
+const PopContent = ({ copied }) => {
+  return createPortal(
+    <section>
+      {copied && <div style={{ position: 'absolute', bottom: '3rem', color: 'red' }}>copied to clipboard</div>}
+    </section>,
+    document.querySelector('#popupContent')
+  );
+};
+export default PopContent;
+```
+
+## Advanced keys
+
+keys basically lets you create unique ui,components or elements
+
+```jsx
+import { useState } from 'react';
+
+const Switcher = () => {
+  const [sw, setSw] = useState(false);
+  const body = document.querySelector('body');
+  return (
+    <div>
+      {sw ? body.classList.add('dark') : body.classList.remove('dark')}
+      <input type="text" key={sw ? 'dark' : 'light'} />
+      {/* basically lets you make this input field unique */}
+      <button
+        onClick={() => {
+          setSw((s) => !s);
+        }}
+      >
+        switch
+      </button>
+    </div>
+  );
+};
+export default Switcher;
+```
+
+## useEffect Hook
+
+allows you to perform sideEffects in your components . some examples of side effects are : fetching data directly updating the DOM etc
+
+### syntax
+
+```jsx
+useEffect(
+  () => {
+    // code goes here
+  },
+  [
+    /*optional*/
+  ]
+);
+
+// 1. without and array -calls on every single render
+// 2. you cant wrap your useEffect inside conditional Statement instead you  can use it inside
+// 3. empty dependency array: run once on the initial render
+// 4. with a specified state in the dependency array : runs any time the state changes
+```
+
+## Prop drilling
+
+basically passing props from one component to another (manually) (not a good way to pass props)
+
+## ContextAPI
+
+it is a feature that allows you to manage and share state across your component tree without having to pass props down manually at every level
+it is useful for scenarios where you need to share data or functions across many components especially when this components are deeply nested
+
+_p.s: also not a good way to prop drill_
+
+## Context api in action
+
+1.  you import `createContext`
+
+```jsx
+import { createContext } from 'react';
+```
+
+2. then you create and instance of it
+
+```jsx
+export const MyContext = createContext();
+```
+
+3. then you pass your data
+
+```jsx
+function App() {
+  const sharedData = 'Hello from Context!';
+  return (
+    <MyContext.Provider value={sharedData}>
+      {/* Your components that need sharedData go here */}
+      <ChildComponent />
+    </MyContext.Provider>
+  );
+}
+s;
+```
+
+4.consuming the data
+
+```jsx
+// first import the data ps you can pass more than one
+import { sharedData, Data1 } from '../App.jsx';
+const ComponentC = () => {
+  return (
+    <div>
+      // then consume it like this
+      <MyContext.Consumer>
+        {(name) => (
+          <MyContext.Consumer>
+            // use a call back function to acess the passed value
+            {(age) => {
+              return (
+                <h1>
+                  {' '}
+                  hello my name is {name} i am {age} years old
+                </h1>
+              );
+            }}
+          </MyContext.Consumer>
+        )}
+      </MyContext.Consumer>
+    </div>
+  );
+};
+export default ComponentC;
+```
+
+## useContext Hook
+
+allows us to access the context values provided by a context object directly within a functional component P.s skipping all the bullshit call back hell
+
+### useContext() in action
+
+1. you import your context api in the component you want to pass the props from e.g the App component
+
+```jsx
+import { createContext } from 'react';
+```
+
+2. then you create an instance of your context and export it so you can access it in other component
+
+```jsx
+export const Data = createContext();
+```
+
+3. then you use it
+
+```jsx
+function App() {
+  const name = 'tolani';
+  // lets say we want to share the name
+  return (
+    <>
+      <Data.Provider value={name}>
+        // then you call the component you intend on using the name in it here
+        <Profile />
+      </Data.Provider>
+    </>
+  );
+}
+```
+
+4. when using the context api it lets you ditch the original callback hell and lets you simplify things
+
+```jsx
+//  you first import it in the file you want to use the props that is being passed in
+
+import { useContext } from 'react';
+// import the data from the parent component
+import { Data } from './App.jsx';
+
+function Profile() {
+  // initialize the context into a variable and specify the context location
+  const userName = useContext(Data);
+
+  return (
+    // then use it
+    <h1>my name is {userName}</h1>
+  );
+}
+```
+
+## useReducer Hook
+
+it is similar to the useState but it is designed for more complex state object or state transitions that involves multiple sub values
+
+### syntax
+
+1. import first
+
+```jsx
+import { useReducer } from 'react';
+```
+
+2.using it
+
+```jsx
+const [state, dispatch] = useReducer[(reducer, initialState)];
+
+// reducer - a function that describes how the state should change based on an action. it takes the current state and the action as parameter and returns a new state value
+
+// initialState -  starting value for the state when a components first renders
+
+// state - current state value which you can use inside your component
+
+// dispatch - a function you call to send actions to the reducer  which then updates the state
+```
+
+- start time : 5:15am (3:27:08)
+- mini goal : 3:43:40
+- stop time : 0:00:00
+- goal : 4:01:42
