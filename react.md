@@ -282,11 +282,7 @@ const App = () => {
 };
 // AND operator
 const Cart = () => {
-  const items = [
-    'Bag',
-    'Laptop',
-    'Skin Care',
-  ];
+  const items = ['Bag', 'Laptop', 'Skin Care'];
   return (
     <>
       {items.length > 0 && <h1> you have {items.length} items in your Cart</h1>}
@@ -654,7 +650,7 @@ useEffect(
   ]
 );
 
-// 1. without and array -calls on every single render
+// 1. without an array -calls on every single render
 // 2. you cant wrap your useEffect inside conditional Statement instead you  can use it inside
 // 3. empty dependency array: run once on the initial render
 // 4. with a specified state in the dependency array : runs any time the state changes
@@ -811,7 +807,121 @@ const [state, dispatch] = useReducer[(reducer, initialState)];
 // dispatch - a function you call to send actions to the reducer  which then updates the state
 ```
 
+## useRef Hook
+
+provides a way to access and interact with the dom elements or to persist values across renders without causing a re render
+
+1. import the useRef hook
+2. save the useRef hook in a variable
+
+```jsx
+const myElement = useRef(null);
+```
+
+3.use the useRef hook
+
+```jsx
+function ComponentName() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    myElement.current.focus();
+    myElement.current.value = 'HuXn';
+  }
+  return (
+    <div>
+      <input type="text" ref={myElement} />
+
+      <button onClick={handleClick}> click and write HuXn</button>
+    </div>
+  );
+}
+```
+
+## Custom Hooks
+
+they are javascript functions that start with the prefix(e.g useFetch,ueForm) and can call other hooks within them they allow you to extract and reuse logic that involves state or sideEffects making your components more readable and maintainable
+
+## demonstration
+
+```jsx
+//  create a separate file to house your function (custom hook)
+
+// basic example
+// useFetch.jsx
+
+// creating custom hook
+//  this hook basically lets use a fetch logic without having to create it every single time
+import { useState, useEffect } from 'react';
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+
+  return [data];
+}
+export default useFetch;
+// using the custom hook
+// first import yor custom hook
+
+import useFetch from './useFetch';
+
+const App = () => {
+  // destructure it
+  const [data] = useFetch('https://jsonplaceholder.typicode.com/posts');
+
+  // you can go ahead an use it
+  return (
+    <div>
+      {data &&
+        data.map((p) => {
+          return (
+            <ul key={p.id}>
+              <li>{p.title}</li>
+            </ul>
+          );
+        })}
+    </div>
+  );
+};
+// export default App;
+```
+
+## useId hook
+
+used to generate unique ids for components
+
+```jsx
+import { useId } from 'react';
+
+const UniqueId = () => {
+  const id = useId();
+  return (
+    <div>
+      {/*  if you want to make the id unique for each element you prefix it  */}
+      <label htmlFor={`${id}--email`}>email</label>
+      <input type="email" id={`${id}--email`} />
+
+      <label htmlFor={id}>passWord</label>
+      <input type="password" id={id} />
+    </div>
+  );
+};
+export default UniqueId;
+```
+
 - start time : 5:15am (3:27:08)
-- mini goal : 3:43:40
 - stop time : 0:00:00
-- goal : 4:01:42
+
+useRef X
+useReducer
+useState
+useContext
+useEffect
+useId
+custom hook
