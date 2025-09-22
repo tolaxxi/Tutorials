@@ -403,7 +403,7 @@ const movieOne: Movie = {
 // interface for function
 
 interface MathOperations {
-  (x: number, y: numb er): number;
+  (x: number, y: number): number;
 }
 // using the interface for functions
 

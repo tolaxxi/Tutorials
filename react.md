@@ -915,13 +915,205 @@ const UniqueId = () => {
 export default UniqueId;
 ```
 
-- start time : 5:15am (3:27:08)
+# react js with typescript
+
+# types for props
+
+```jsx
+// passing props
+import User from './components/User';
+
+const App = () => {
+  return (
+    <div>
+      <User name="alex" age={10} />
+    </div>
+  );
+};
+export default App;
+// using props with types
+
+// destructuring the props
+
+// use an interface/a type  to set types of the props if you want to use destructured props
+interface User {
+  name: string;
+  age: number;
+}
+// or
+
+type User ={
+  name: string;
+  age: number;
+}
+
+const User = ({ name }: User) => {
+  return (
+    <div>
+      <h2>name:{name}</h2>
+    </div>
+  );
+};
+export default User;
+
+// using the props directly
+
+const User = (props: { name: string; age: number }) => {
+  return (
+    <div>
+      <h1>name:{props.name}</h1>
+      <h1>age:{props.age}</h1>
+    </div>
+  );
+};
+// using types with props children
+
+const App = () => {
+
+  return (
+    <div>
+      <User>
+        <p>hello</p>
+      </User>
+    </div>
+  );
+};
+export default App;
+
+// consuming the props
+
+import type { ReactNode } from 'react';
+
+interface childrenProps {
+  children: ReactNode;
+}
+
+const User = ({ children }: childrenProps) => {
+  return <div>{children}</div>;
+};
+export default User;
+
+
+// using FC  to consume props (the old method)
+import type { FC } from 'react';
+
+interface userProps {
+  name: string;
+  age: number;
+}
+
+const User: FC<userProps> = ({ name, age }) => {
+  return (
+    <div>
+      <h1>name:{name}</h1>
+      <h1>age:{age}</h1>
+    </div>
+  );
+};
+export default User;
+
+```
+
+## reusable types
+
+is basically creating reusable types and then exporting it to use in another file you can use whatever import/export method you like just make sure you provide the `type ` keyword
+
+1. exporting it
+
+```jsx
+export type { typeName };
+```
+
+2. importing it
+
+```jsx
+import type { typeName } from 'file location';
+```
+
+## types for useState
+
+basically to use a type for a useState , useState is basically a generic function
+
+```tsx
+const [name, setName] = useState<string>('tolani');
+```
+
+## types for useRef,forms & Event
+
+### types for form
+
+1. you define an interface for the form data
+
+```tsx
+interface FormData {
+  name: string;
+  age: number | null;
+  password: string;
+}
+```
+
+2. you then use it in a useState with the type of <Formdata>
+
+```tsx
+useState<FormData> ={
+  name:""
+  age:null
+  password:""
+}
+```
+
+### types for event(e.target)
+
+to use events in reactc you need to specify the event type and where the event is coming from
+note you have to import the event type
+
+```tsx
+import { ChangeEvent } from 'react';
+function handleTyping(e: ChangeEvent<HTMLInputElement>);
+```
+
+### common event types
+
+- ChangeEvent<HTMLInputElement>
+- ChangeEvent<HTMLTextAreaElement>
+- ChangeEvent<HTMLSelectElement>
+- FormEvent<HTMLFormElement>
+- MouseEvent<HTMLButtonElement>
+- MouseEvent<HTMLDivElement>
+- KeyboardEvent<HTMLInputElement>
+- FocusEvent<HTMLInputElement>
+- FocusEvent<HTMLTextAreaElement>
+
+## types for useRef
+
+basically useRef is like useState except it doesn't re render the components
+it is commonly used to reference DOM elements
+
+```tsx
+const inputRef = useRef<HTMLInputElement>(null);
+```
+
+## Types for context Api
+
+it is a way to store data and have it be accessible for every component in the tree  without having to pass it through props 
+ 
+ Google it you mf 
+## types for useReducer
+
+# must Know hooks
+
+- useState → manage state in components ✅
+- useEffect → side effects (fetch, timers, subscriptions)✅
+- useRef → DOM references or persistent values across renders ✅
+- useContext → consume context values
+- useReducer → manage complex state or multiple state updates
+- useMemo → memoize expensive calculations
+- useCallback → memoize functions to prevent unnecessary re-renders
+
+
+---
+- start time : 7:50am (7:11:40)
+- target : (8:01:12)
 - stop time : 0:00:00
 
-useRef X
-useReducer
-useState
-useContext
-useEffect
-useId
-custom hook
+---
