@@ -1095,11 +1095,13 @@ const inputRef = useRef<HTMLInputElement>(null);
 
 ## Types for context Api
 
-it is a way to store data and have it be accessible for every component in the tree  without having to pass it through props 
- 
- Google it you mf 
+it is a way to store data and have it be accessible for every component in the tree without having to pass it through props
+
+Google it you mf
+
 ## types for useReducer
 
+---
 # must Know hooks
 
 - useState → manage state in components ✅
@@ -1110,10 +1112,7 @@ it is a way to store data and have it be accessible for every component in the t
 - useMemo → memoize expensive calculations
 - useCallback → memoize functions to prevent unnecessary re-renders
 
-
 ---
-- start time : 7:50am (7:11:40)
-- target : (8:01:12)
-- stop time : 0:00:00
 
----
+# React Monster 2 
+

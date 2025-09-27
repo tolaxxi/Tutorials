@@ -65,3 +65,28 @@
 - `*` - any version
 - `>=1.2.3` - minimum version
 - `<=1.2.3` - maximum version
+
+# Package Managers Cheat Sheet (npm, yarn, pnpm)
+
+---
+
+## 🔹 1. Detecting Which One to Use
+
+- If the project has **`package-lock.json`** → use **npm**.
+- If the project has **`yarn.lock`** → use **yarn**.
+- If the project has **`pnpm-lock.yaml`** → use **pnpm**.
+
+Always stick to the lockfile the repo uses.
+
+---
+
+## 🔹 2. Common Commands
+
+| Task             | npm                   | yarn                | pnpm                |
+| ---------------- | --------------------- | ------------------- | ------------------- |
+| Install deps     | `npm install`         | `yarn install`      | `pnpm install`      |
+| Add package      | `npm install axios`   | `yarn add axios`    | `pnpm add axios`    |
+| Remove package   | `npm uninstall axios` | `yarn remove axios` | `pnpm remove axios` |
+| Run dev script   | `npm run dev`         | `yarn dev`          | `pnpm dev`          |
+| Run build script | `npm run build`       | `yarn build`        | `pnpm build`        |
+| Run tests        | `npm test`            | `yarn test`         | `pnpm test`         |
